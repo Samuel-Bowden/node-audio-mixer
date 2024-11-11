@@ -13,7 +13,7 @@ export class AudioMixer extends Readable {
 
 	private delayTimeValue = 1;
 	private isWork = false;
-	private readonly minInputs = 1;
+	private minInputs = 1;
 
 	private readonly inputs: AudioInput[] = [];
 
