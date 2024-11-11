@@ -13,6 +13,7 @@ export class AudioMixer extends Readable {
 
 	private delayTimeValue = 1;
 	private isWork = false;
+	private minInputs = 1;
 
 	private readonly inputs: AudioInput[] = [];
 
@@ -24,6 +25,10 @@ export class AudioMixer extends Readable {
 
 		if (params.delayTime && typeof params.delayTime === 'number') {
 			this.delayTimeValue = params.delayTime;
+		}
+
+		if (params.minInputs && typeof params.minInputs === 'number') {
+			this.minInputs = params.minInputs;
 		}
 
 		this.loopRead();
@@ -43,7 +48,7 @@ export class AudioMixer extends Readable {
 		const allInputsSize: number[] = this.inputs.map((input: AudioInput) => input.dataSize)
 			.filter(size => size >= (this.params.highWaterMark ?? (this.params.bitDepth / 8)));
 
-		if (allInputsSize.length > 0) {
+		if (allInputsSize.length >= this.minInputs) {
 			const minDataSize: number = this.mixerParams.highWaterMark ?? Math.min(...allInputsSize);
 
 			const availableInputs = this.inputs.filter((input: AudioInput) => input.dataSize >= minDataSize);
