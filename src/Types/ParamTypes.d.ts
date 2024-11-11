@@ -19,6 +19,7 @@ export type MixerParams = {
 	generateSilence?: boolean;
 	silentDuration?: number;
 	delayTime?: DelayTimeType;
+	minInputs?: number;
 } & BasedParams;
 
 export type InputParams = {
