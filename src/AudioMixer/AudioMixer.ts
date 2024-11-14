@@ -30,8 +30,6 @@ export class AudioMixer extends Readable {
 		if (params.minInputs && typeof params.minInputs === 'number') {
 			this.minInputs = params.minInputs;
 		}
-
-		this.loopRead();
 	}
 
 	get params(): Readonly<MixerParams> {
@@ -42,13 +40,19 @@ export class AudioMixer extends Readable {
 		Object.assign(this.mixerParams, params);
 	}
 
+	drain(): void {
+		while (this.inputs.slice(0, this.minInputs).filter(i => i.dataSize >= this.params.highWaterMark!).length == this.minInputs) {
+			this._read()
+		}
+	}
+
 	_read(): void {
 		assertHighWaterMark(this.params.bitDepth, this.params.highWaterMark);
 
 		const allInputsSize: number[] = this.inputs.map((input: AudioInput) => input.dataSize)
 			.filter(size => size >= (this.params.highWaterMark ?? (this.params.bitDepth / 8)));
 
-		if (allInputsSize.length >= this.minInputs) {
+		if (allInputsSize.length > 0) {
 			const minDataSize: number = this.mixerParams.highWaterMark ?? Math.min(...allInputsSize);
 
 			const availableInputs = this.inputs.filter((input: AudioInput) => input.dataSize >= minDataSize);
@@ -115,23 +119,5 @@ export class AudioMixer extends Readable {
 		}
 
 		return false;
-	}
-
-	private loopRead(): void {
-		if (!this.closed || this.inputs.length > 0) {
-			if (!this.isPaused()) {
-				this._read();
-
-				if (this.mixerParams.delayTime && typeof this.mixerParams.delayTime === 'function') {
-					this.delayTimeValue = this.mixerParams.delayTime();
-				}
-			}
-
-			setTimeout(this.loopRead.bind(this), this.delayTimeValue);
-
-			return;
-		}
-
-		this.unshift(null);
 	}
 }
