@@ -5,6 +5,7 @@ import {endianness} from 'os';
 
 import {InputUtils} from '../Utils/InputUtils';
 import {getZeroSample} from '../Utils/General/GetZeroSample';
+import { RMSStats } from '../Stats/RMS';
 
 type SelfRemoveFunction = (audioInput: AudioInput) => void;
 
@@ -19,6 +20,8 @@ export class AudioInput extends Writable {
 	private audioData: Uint8Array = new Uint8Array(0);
 	private correctionBuffer: Uint8Array = new Uint8Array(0);
 
+	rmsStats: RMSStats
+
 	constructor(inputParams: InputParams, mixerParams: MixerParams, selfRemoveFunction?: SelfRemoveFunction) {
 		super();
 
@@ -30,6 +33,8 @@ export class AudioInput extends Writable {
 		this.selfRemoveFunction = selfRemoveFunction;
 
 		this.audioUtils = new InputUtils(inputParams, mixerParams);
+
+		this.rmsStats = new RMSStats()
 	}
 
 	get params(): Readonly<InputParams> {
@@ -153,6 +158,7 @@ export class AudioInput extends Writable {
 			.checkIntType()
 			.checkEndianness()
 			.checkVolume()
+			.updateRMS(this.rmsStats)
 			.getAudioData();
 	}
 

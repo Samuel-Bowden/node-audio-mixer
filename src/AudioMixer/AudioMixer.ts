@@ -6,6 +6,7 @@ import {assertHighWaterMark} from '../Asserts/AssertHighWaterMark';
 
 import {MixerUtils} from '../Utils/MixerUtils';
 import {AudioInput} from '../AudioInput/AudioInput';
+import { RMSStats } from '../Stats/RMS';
 
 export class AudioMixer extends Readable {
 	private readonly mixerParams: MixerParams;
@@ -16,6 +17,8 @@ export class AudioMixer extends Readable {
 	private minInputs = 1;
 
 	private readonly inputs: AudioInput[] = [];
+
+	rmsStats: RMSStats
 
 	constructor(params: MixerParams) {
 		super();
@@ -30,6 +33,8 @@ export class AudioMixer extends Readable {
 		if (params.minInputs && typeof params.minInputs === 'number') {
 			this.minInputs = params.minInputs;
 		}
+
+		this.rmsStats = new RMSStats()
 	}
 
 	get params(): Readonly<MixerParams> {
@@ -61,6 +66,7 @@ export class AudioMixer extends Readable {
 			let mixedData = this.audioUtils.setAudioData(dataCollection)
 				.mix()
 				.checkVolume()
+				.updateRMS(this.rmsStats)
 				.getAudioData();
 
 			if (this.mixerParams.preProcessData) {
