@@ -6,19 +6,19 @@ import {assertHighWaterMark} from '../Asserts/AssertHighWaterMark';
 
 import {MixerUtils} from '../Utils/MixerUtils';
 import {AudioInput} from '../AudioInput/AudioInput';
-import {RMSStats} from '../Stats/RMS';
+import {RootMeanSquareStats} from '../Stats/RMS';
 
 export class AudioMixer extends Readable {
+	rmsStats: RootMeanSquareStats;
+
 	private readonly mixerParams: MixerParams;
 	private readonly audioUtils: MixerUtils;
 
-	private readonly delayTimeValue = 1;
+	private readonly delayTimeValue;
 	private isWork = false;
-	private readonly minInputs = 1;
+	private readonly minInputs;
 
 	private readonly inputs: AudioInput[] = [];
-
-	rmsStats: RMSStats;
 
 	constructor(params: MixerParams) {
 		super();
@@ -28,13 +28,17 @@ export class AudioMixer extends Readable {
 
 		if (params.delayTime && typeof params.delayTime === 'number') {
 			this.delayTimeValue = params.delayTime;
+		} else {
+			this.delayTimeValue = 1;
 		}
 
 		if (params.minInputs && typeof params.minInputs === 'number') {
 			this.minInputs = params.minInputs;
+		} else {
+			this.minInputs = 1;
 		}
 
-		this.rmsStats = new RMSStats();
+		this.rmsStats = new RootMeanSquareStats();
 	}
 
 	get params(): Readonly<MixerParams> {
@@ -46,7 +50,7 @@ export class AudioMixer extends Readable {
 	}
 
 	drain(): void {
-		while (this.inputs.slice(0, this.minInputs).filter(i => i.dataSize >= this.params.highWaterMark!).length == this.minInputs) {
+		while (this.inputs.slice(0, this.minInputs).filter(i => i.dataSize >= this.params.highWaterMark!).length === this.minInputs) {
 			this._read();
 		}
 	}
@@ -66,7 +70,7 @@ export class AudioMixer extends Readable {
 			let mixedData = this.audioUtils.setAudioData(dataCollection)
 				.mix()
 				.checkVolume()
-				.updateRMS(this.rmsStats)
+				.updateRootMeanSquare(this.rmsStats)
 				.getAudioData();
 
 			if (this.mixerParams.preProcessData) {

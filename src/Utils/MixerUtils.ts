@@ -5,8 +5,8 @@ import {changeVolume} from './AudioUtils/СhangeVolume';
 
 import {ModifiedDataView} from '../ModifiedDataView/ModifiedDataView';
 import {mixAudioData} from './General/MixAudioData';
-import {type RMSStats} from '../Stats/RMS';
-import {updateRMS} from './AudioUtils/UpdateRMS';
+import {type RootMeanSquareStats} from '../Stats/RMS';
+import {updateRootMeanSquare} from './AudioUtils/UpdateRMS';
 
 export class MixerUtils implements AudioUtils {
 	private readonly audioMixerParams: MixerParams;
@@ -53,8 +53,8 @@ export class MixerUtils implements AudioUtils {
 		return this;
 	}
 
-	public updateRMS(rms: RMSStats): this {
-		updateRMS(this.mixedData, this.changedParams, rms);
+	public updateRootMeanSquare(rms: RootMeanSquareStats): this {
+		updateRootMeanSquare(this.mixedData, this.changedParams, rms);
 
 		return this;
 	}

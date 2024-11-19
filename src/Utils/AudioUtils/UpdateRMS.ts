@@ -4,9 +4,9 @@ import {type IntType, type BitDepth} from '../../Types/AudioTypes';
 
 import {isLittleEndian} from '../General/IsLittleEndian';
 import {getMethodName} from '../General/GetMethodName';
-import {type RMSStats} from '../../Stats/RMS';
+import {type RootMeanSquareStats} from '../../Stats/RMS';
 
-export function updateRMS(audioData: ModifiedDataView, params: InputParams | MixerParams, rms: RMSStats): void {
+export function updateRootMeanSquare(audioData: ModifiedDataView, params: InputParams | MixerParams, rms: RootMeanSquareStats): void {
 	const bytesPerElement = params.bitDepth / 8;
 
 	const isLe = isLittleEndian(params.endianness);

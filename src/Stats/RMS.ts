@@ -1,4 +1,4 @@
-export class RMSStats {
+export class RootMeanSquareStats {
 	sumOfSquares: number;
 	count: number;
 
@@ -12,7 +12,7 @@ export class RMSStats {
 		this.count += 1;
 	}
 
-	getRMS() {
+	getRootMeanSquare() {
 		return Math.sqrt(this.sumOfSquares / this.count);
 	}
 
