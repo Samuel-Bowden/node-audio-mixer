@@ -29,7 +29,7 @@ class MixerUtils {
     }
     checkVolume() {
         const volume = this.audioMixerParams.volume ?? 100;
-        if (volume < 100) {
+        if (volume !== 100) {
             (0, _hangeVolume_1.changeVolume)(this.mixedData, this.changedParams);
         }
         return this;

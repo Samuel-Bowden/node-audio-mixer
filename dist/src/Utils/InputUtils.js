@@ -54,7 +54,7 @@ class InputUtils {
     }
     checkVolume() {
         const volume = this.changedParams.volume ?? 100;
-        if (volume < 100) {
+        if (volume !== 100) {
             (0, _hangeVolume_1.changeVolume)(this.audioData, this.changedParams);
         }
         return this;

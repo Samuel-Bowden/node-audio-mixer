@@ -82,7 +82,7 @@ export class InputUtils implements AudioUtils {
 	public checkVolume(): this {
 		const volume = this.changedParams.volume ?? 100;
 
-		if (volume < 100) {
+		if (volume !== 100) {
 			changeVolume(this.audioData, this.changedParams);
 		}
 
