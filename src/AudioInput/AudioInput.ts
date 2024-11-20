@@ -5,12 +5,12 @@ import {endianness} from 'os';
 
 import {InputUtils} from '../Utils/InputUtils';
 import {getZeroSample} from '../Utils/General/GetZeroSample';
-import {RootMeanSquareStats} from '../Stats/RMS';
+import Stats from '../Utils/Stats';
 
 type SelfRemoveFunction = (audioInput: AudioInput) => void;
 
 export class AudioInput extends Writable {
-	rmsStats: RootMeanSquareStats;
+	stats: Stats;
 
 	private readonly inputParams: InputParams;
 	private readonly mixerParams: MixerParams;
@@ -34,7 +34,7 @@ export class AudioInput extends Writable {
 
 		this.audioUtils = new InputUtils(inputParams, mixerParams);
 
-		this.rmsStats = new RootMeanSquareStats();
+		this.stats = new Stats(inputParams.bitDepth);
 	}
 
 	get params(): Readonly<InputParams> {
@@ -158,7 +158,7 @@ export class AudioInput extends Writable {
 			.checkIntType()
 			.checkEndianness()
 			.checkVolume()
-			.updateRootMeanSquare(this.rmsStats)
+			.updateStats(this.stats)
 			.getAudioData();
 	}
 
