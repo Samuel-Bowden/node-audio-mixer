@@ -1,6 +1,6 @@
 import { type AudioUtils } from '../Types/AudioUtils';
 import { type MixerParams } from '../Types/ParamTypes';
-import { type RootMeanSquareStats } from '../Stats/RMS';
+import type Stats from './Stats';
 export declare class MixerUtils implements AudioUtils {
     private readonly audioMixerParams;
     private changedParams;
@@ -11,6 +11,6 @@ export declare class MixerUtils implements AudioUtils {
     setAudioData(audioData: Uint8Array[]): this;
     mix(): this;
     checkVolume(): this;
-    updateRootMeanSquare(rms: RootMeanSquareStats): this;
+    updateStats(stats: Stats): this;
     getAudioData(): Uint8Array;
 }

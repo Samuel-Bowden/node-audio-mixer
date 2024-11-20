@@ -1,9 +1,9 @@
 import { type MixerParams, type InputParams, type OmitSomeParams } from '../Types/ParamTypes';
 import { Readable } from 'stream';
 import { AudioInput } from '../AudioInput/AudioInput';
-import { RootMeanSquareStats } from '../Stats/RMS';
+import Stats from '../Utils/Stats';
 export declare class AudioMixer extends Readable {
-    rmsStats: RootMeanSquareStats;
+    stats: Stats;
     private readonly mixerParams;
     private readonly audioUtils;
     private readonly delayTimeValue;

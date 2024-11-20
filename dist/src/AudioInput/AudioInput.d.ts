@@ -1,9 +1,9 @@
 import { type OmitSomeParams, type InputParams, type MixerParams } from '../Types/ParamTypes';
 import { Writable } from 'stream';
-import { RootMeanSquareStats } from '../Stats/RMS';
+import Stats from '../Utils/Stats';
 type SelfRemoveFunction = (audioInput: AudioInput) => void;
 export declare class AudioInput extends Writable {
-    rmsStats: RootMeanSquareStats;
+    stats: Stats;
     private readonly inputParams;
     private readonly mixerParams;
     private readonly selfRemoveFunction;
