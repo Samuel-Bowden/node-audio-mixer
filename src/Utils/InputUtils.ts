@@ -11,8 +11,8 @@ import {changeBitDepth} from './AudioUtils/ChangeBitDepth';
 import {changeSampleRate} from './AudioUtils/СhangeSampleRate';
 import {changeChannelsCount} from './AudioUtils/СhangeChannelsCount';
 import {changeEndianness} from './AudioUtils/ChangeEndianness';
-import {updateRootMeanSquare} from './AudioUtils/UpdateRMS';
-import {type RootMeanSquareStats} from '../Stats/RMS';
+import {updateStats} from './AudioUtils/UpdateStats';
+import type Stats from './Stats';
 
 export class InputUtils implements AudioUtils {
 	private readonly audioInputParams: InputParams;
@@ -39,8 +39,8 @@ export class InputUtils implements AudioUtils {
 		return this;
 	}
 
-	public updateRootMeanSquare(rms: RootMeanSquareStats): this {
-		updateRootMeanSquare(this.audioData, this.changedParams, rms);
+	public updateStats(stats: Stats): this {
+		updateStats(this.audioData, this.changedParams, stats);
 
 		return this;
 	}
