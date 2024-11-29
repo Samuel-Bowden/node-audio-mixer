@@ -34,7 +34,7 @@ export class AudioInput extends Writable {
 
 		this.audioUtils = new InputUtils(inputParams, mixerParams);
 
-		this.stats = new Stats(inputParams.bitDepth);
+		this.stats = new Stats(inputParams.bitDepth, inputParams.channels);
 	}
 
 	get params(): Readonly<InputParams> {
