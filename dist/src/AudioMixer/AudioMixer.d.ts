@@ -8,12 +8,10 @@ export declare class AudioMixer extends Readable {
     private readonly audioUtils;
     private readonly delayTimeValue;
     private isWork;
-    private readonly minInputs;
     private readonly inputs;
     constructor(params: MixerParams);
     get params(): Readonly<MixerParams>;
     set params(params: OmitSomeParams<MixerParams>);
-    drain(): void;
     _read(): void;
     _destroy(error: Error, callback: (error?: Error) => void): void;
     createAudioInput(inputParams: InputParams): AudioInput;

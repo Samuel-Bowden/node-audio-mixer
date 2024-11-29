@@ -16,7 +16,7 @@ class AudioInput extends stream_1.Writable {
         this.mixerParams = mixerParams;
         this.selfRemoveFunction = selfRemoveFunction;
         this.audioUtils = new InputUtils_1.InputUtils(inputParams, mixerParams);
-        this.stats = new Stats_1.default(inputParams.bitDepth);
+        this.stats = new Stats_1.default(inputParams.bitDepth, inputParams.channels);
     }
     get params() {
         return this.inputParams;

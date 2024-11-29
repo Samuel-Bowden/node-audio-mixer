@@ -19,24 +19,13 @@ class AudioMixer extends stream_1.Readable {
         else {
             this.delayTimeValue = 1;
         }
-        if (params.minInputs && typeof params.minInputs === 'number') {
-            this.minInputs = params.minInputs;
-        }
-        else {
-            this.minInputs = 1;
-        }
-        this.stats = new Stats_1.default(params.bitDepth);
+        this.stats = new Stats_1.default(params.bitDepth, params.channels);
     }
     get params() {
         return this.mixerParams;
     }
     set params(params) {
         Object.assign(this.mixerParams, params);
-    }
-    drain() {
-        while (this.inputs.slice(0, this.minInputs).filter(i => i.dataSize >= this.params.highWaterMark).length === this.minInputs) {
-            this._read();
-        }
     }
     _read() {
         (0, AssertHighWaterMark_1.assertHighWaterMark)(this.params.bitDepth, this.params.highWaterMark);
