@@ -38,7 +38,6 @@ export class AudioMixer extends Readable {
 			this.minInputs = 1;
 		}
 
-		this.stats = new Stats(params.bitDepth);
 		this.stats = new Stats(params.bitDepth, params.channels);
 	}
 
