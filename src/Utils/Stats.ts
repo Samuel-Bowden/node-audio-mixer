@@ -21,6 +21,10 @@ export class ChannelStatsPeriod {
 	}
 
 	get rootMeanSquare(): number {
+		if (this.count === 0) {
+			return 0;
+		}
+
 		return Math.sqrt(this.sumOfSquares / this.count) / this.maxRange;
 	}
 
