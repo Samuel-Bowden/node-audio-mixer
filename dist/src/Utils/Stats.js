@@ -15,6 +15,9 @@ class ChannelStatsPeriod {
         this.peakValue = Math.max(this.peakValue, Math.abs(sample));
     }
     get rootMeanSquare() {
+        if (this.count === 0) {
+            return 0;
+        }
         return Math.sqrt(this.sumOfSquares / this.count) / this.maxRange;
     }
     get peak() {
